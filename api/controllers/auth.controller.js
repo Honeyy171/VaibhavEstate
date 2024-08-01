@@ -9,18 +9,18 @@ export const signup =  async (req,res,next) => {
 try {
   const { username, email, password } = req.body;
 
+ 
+
+  const hashedPassword = bcryptjs.hashSync(password,10);
+  const newUser = new User({username, email, password: hashedPassword});
+
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return res.status(400).json({ message: "Email is already in use" });
   }
 
 
-  const hashedPassword = bcryptjs.hashSync(password,10);
-  const newUser = new User({username, email, password: hashedPassword});
-
-  const validUser = await User.findOne({ email });
-
-  if(validUser) res.status(404).json({message: 'User already existed!'});
+  
 
  
   
